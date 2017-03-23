@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Applicant Tracking</title>
+    @Styles.Render("~/Content/css")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <!--left menu-->
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    @Html.Partial("_Menu");
+                </div>
+            </div>
+            <!--/left menu-->
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    @Html.Partial("_TopNavigation");
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                @RenderBody()
+
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <!--I tend to remain this-->
+                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/vendors")
+    @RenderSection("scripts", required: false)
+
+    <script src="http://localhost:2903/signalr/hubs" type="text/javascript"></script>
+    <!--Add script to update the page and send messages.-->
+    <script type="text/javascript">
+        $(function() {
+            var welcome = $.connection.welcomeHub;
+
+            welcome.client.hello = function () {
+                console.log("hello!!!");
+                init_PNotify();
+            }
+        });
+    </script>
+</body>
+</html>

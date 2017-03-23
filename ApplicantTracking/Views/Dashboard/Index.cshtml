@@ -1,0 +1,133 @@
+﻿@model IEnumerable<ApplicantTracking.Models.JobPostModel>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Jobs List</h3>
+        <a href="@Url.Action("Create", "Dashboard")" class="btn btn-success"> Post Job</a>
+    </div>
+    <div class="title_right">
+        @using (Html.BeginForm("Index", "Dashboard", FormMethod.Post))
+        {
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.TextBox("search", null, new { @class="form-control", placeholder="Search for..."})
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                </span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    @{
+        foreach (var jobs in @Model)
+        {
+            var interview = Math.Abs(jobs.Interviewed) < 0 ? 0 : (jobs.Interviewed/jobs.TotalApplications);
+            var withdraw = Math.Abs(jobs.Withdraw) < 0 ? 0 : (jobs.Withdraw/jobs.TotalApplications);
+            var immediateRejection = Math.Abs(jobs.ImmediateRejection) < 0 ? 0 : (jobs.ImmediateRejection/jobs.TotalApplications);
+            var newApplicant = Math.Abs(jobs.New) < 0 ? 0 : (jobs.New/jobs.TotalApplications);
+            var hired = Math.Abs(jobs.Hired) < 0 ? 0 : (jobs.Hired/jobs.TotalApplications);
+
+            <div class="col-md-6">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>
+                            <a href="@Url.Action("Details", "Dashboard", new{ id = jobs.Id })"> <i class="fa fa-align-left"></i> @jobs.JobTitle</a>
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            @if (jobs.IsClosed == false)
+                            {
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                                <li><a href="@Url.Action("Close", "Dashboard", new{ id = jobs.Id})"><i class="fa fa-remove"></i></a></li>
+                                <li><a href="@Url.Action("Edit", "Dashboard", new { id = jobs.Id})"><i class="fa fa-edit"></i></a></li>
+                            }
+                            else
+                            {
+                                <li>Job Closed</li>
+                            }
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="tile_count">
+                            <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top purple"><i class="fa fa-user purple"></i> Withdraw</span>
+                                <div class="count">@withdraw.ToString("P1")</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top red"><i class="fa fa-user red"></i> Immediate Rejection</span>
+                                <div class="count">@immediateRejection.ToString("P1")</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top blue"><i class="fa fa-user blue"></i> Interview</span>
+                                <div class="count">@interview.ToString("P1")</div>
+                            </div>
+                        </div>
+                        <div class="tile_count">
+                            <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Total Applicant</span>
+                                <div class="count">@jobs.TotalApplications</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> New</span>
+                                <div class="count">@newApplicant.ToString("P1")</div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top green"><i class="fa fa-user green"></i> Hired</span>
+                                <div class="count">@hired.ToString("P1")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-6">
+                            <div>
+                                <p>Withdraw</p>
+                                <div class="">
+                                    <div class="progress progress_sm" style="width: 100%;">
+                                        <div class="progress-bar bg-purple" role="progressbar" data-transitiongoal="@Math.Round(withdraw*100, 2)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>Immediate Rejection</p>
+                                <div class="">
+                                    <div class="progress progress_sm" style="width: 100%;">
+                                        <div class="progress-bar bg-red" role="progressbar" data-transitiongoal="@Math.Round(immediateRejection*100, 2)n"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>Interview</p>
+                                <div class="">
+                                    <div class="progress progress_sm" style="width: 100%;">
+                                        <div class="progress-bar bg-blue" role="progressbar" data-transitiongoal="@Math.Round(interview*100, 2)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>New applicant</p>
+                                <div class="">
+                                    <div class="progress progress_sm" style="width: 100%;">
+                                        <div class="progress-bar bg-aero" role="progressbar" data-transitiongoal="@Math.Round(newApplicant*100, 2)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>Hired</p>
+                                <div class="">
+                                    <div class="progress progress_sm" style="width: 100%;">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="@Math.Round(hired*100, 2)"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

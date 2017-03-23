@@ -1,0 +1,100 @@
+﻿@model ApplicantTracking.Models.JobPostModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var interview = Math.Abs(Model.Interviewed) < 0 ? 0 : (Model.Interviewed / Model.TotalApplications);
+    var withdraw = Math.Abs(Model.Withdraw) < 0 ? 0 : (Model.Withdraw / Model.TotalApplications);
+    var immediateRejection = Math.Abs(Model.ImmediateRejection) < 0 ? 0 : (Model.ImmediateRejection / Model.TotalApplications);
+    var newApplicant = Math.Abs(Model.New) < 0 ? 0 : (Model.New / Model.TotalApplications);
+    var hired = Math.Abs(Model.Hired) < 0 ? 0 : (Model.Hired / Model.TotalApplications);
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Job Details</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>
+                    <i class="fa fa-align-left"></i> @Model.JobTitle
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="tile_count">
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top purple"><i class="fa fa-user purple"></i> Withdraw</span>
+                        <div class="count">@withdraw.ToString("P1")</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top red"><i class="fa fa-user red"></i> Immediate Rejection</span>
+                        <div class="count">@immediateRejection.ToString("P1")</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top blue"><i class="fa fa-user blue"></i> Interview</span>
+                        <div class="count">@interview.ToString("P1")</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> Total Applicant</span>
+                        <div class="count">@Model.TotalApplications</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top"><i class="fa fa-user"></i> New</span>
+                        <div class="count">@newApplicant.ToString("P1")</div>
+                    </div>
+                    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                        <span class="count_top green"><i class="fa fa-user green"></i> Hired</span>
+                        <div class="count">@hired.ToString("P1")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Applicants <small>for this job opening</small></h2>
+            
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">FullName</th>
+                            <th class="column-title">JobTitle</th>
+                            <th class="column-title">Date Applied</th>
+                            <th class="column-title">HiringStatus </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        foreach (var applicant in @Model.Applicants)
+                        {
+
+
+                            <tr class="even pointer">
+                                <td class=" ">@applicant.FullName</td>
+                                <td class=" ">@applicant.JobTitle</td>
+                                <td class=" ">@applicant.AppliedDate</td>
+                                <td class=" ">@applicant.HiringStatus</td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
